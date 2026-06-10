@@ -9,7 +9,7 @@ Use this repository as a reusable Lingtu AI capability kit.
 
 ## Environment
 
-Require `LINGTU_AI_API_KEY` in the process environment. Send it as the request header `x-api-key`.
+Require `LINGTU_AI_API_KEY` in the process environment. Get your key at https://app.ailingtu.com/api-key-management. Send it as the request header `x-api-key`.
 
 ## Execution
 

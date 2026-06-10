@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "lingtu-content-create": {
+      "source": "jasonxu591-cmd/lingtu-skills",
+      "sourceType": "github",
+      "skillPath": "packages/content-create/SKILL.md",
+      "computedHash": "e74a56e9d4b9e7ee991dd41de3d77bd64b60dc7eea576106d68f7b85b8f68394"
+    },
+    "tkshop-query": {
+      "source": "jasonxu591-cmd/lingtu-skills",
+      "sourceType": "github",
+      "skillPath": "packages/tkshop-query/SKILL.md",
+      "computedHash": "8350b3c298ef2125db9b3300dac9c52f30902f0c8961186859229bd7577bfafc"
+    }
+  }
+}

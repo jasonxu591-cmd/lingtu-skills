@@ -22,7 +22,7 @@ Read `references/api.md` before changing endpoint paths, request fields, respons
 
 Use the same authentication pattern as `lingtu-content-create`.
 
-Get your API key at https://app.ailingtu.com/api-key-management. Set `LINGTU_AI_API_KEY` before making requests. For a one-off shell session:
+Set `LINGTU_AI_API_KEY` before making requests. For a one-off shell session:
 
 ```bash
 export LINGTU_AI_API_KEY="..."

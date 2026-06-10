@@ -20,7 +20,7 @@ Use only the workflow references needed for the request; do not load all of them
 
 ## Configuration
 
-Get your API key at https://app.ailingtu.com/api-key-management. Set `LINGTU_AI_API_KEY` before running the script. For a one-off shell session:
+Set `LINGTU_AI_API_KEY` before running the script. For a one-off shell session:
 
 ```bash
 export LINGTU_AI_API_KEY="..."

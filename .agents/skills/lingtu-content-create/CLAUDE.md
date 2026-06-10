@@ -4,7 +4,7 @@ Use this directory when the user asks Claude Code or OpenClaw to create images, 
 
 ## Requirements
 
-Get your API key at https://app.ailingtu.com/api-key-management. Require `LINGTU_AI_API_KEY` in the process environment. Send it as the request header `x-api-key`.
+Require `LINGTU_AI_API_KEY` in the process environment. Send it as the request header `x-api-key`.
 
 macOS app environment:
 

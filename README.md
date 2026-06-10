@@ -1,6 +1,6 @@
-# 灵兔 AI 能力套件 / Lingtu AI Agent Kit
+# 灵途 AI 能力套件 / Lingtu AI Agent Kit
 
-将灵兔 AI 能力封装为可复用的技能包，适配 Codex、Claude Code、Cursor、Dify、OpenAI 等不同智能体和平台。核心包与模型无关，适配器仅做薄层翻译。
+将灵途 AI 能力封装为可复用的技能包，适配 Codex、Claude Code、Cursor、Dify、OpenAI 等不同智能体和平台。核心包与模型无关，适配器仅做薄层翻译。
 
 <details>
 <summary>:page_facing_up: English Version (click to expand)</summary>
@@ -125,7 +125,7 @@ Keep core logic in `packages/`. Keep adapters thin. When an API contract changes
 
 ## 简介
 
-将灵兔 AI 的能力封装为可复用的技能包，适配以下平台：
+将灵途 AI 的能力封装为可复用的技能包，适配以下平台：
 
 | 适配器 | 目标 |
 |--------|------|
