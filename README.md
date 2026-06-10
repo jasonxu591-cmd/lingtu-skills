@@ -49,7 +49,10 @@ Requests send the key as header `x-api-key`. Never commit API keys or generated 
 ```bash
 git clone https://github.com/<your-org>/lingtu-skills.git
 cd lingtu-skills
+./install.sh                               # Auto-detect your AI platform
 ```
+
+Or specify a target explicitly:
 
 ```bash
 ./install.sh codex                         # Install as Codex skills
@@ -169,9 +172,10 @@ export LINGTU_AI_API_KEY="你的密钥"
 ```bash
 git clone https://github.com/<your-org>/lingtu-skills.git
 cd lingtu-skills
+./install.sh                               # 自动识别当前 AI 平台并安装
 ```
 
-根据目标平台选择安装命令：
+也可手动指定目标平台：
 
 ```bash
 ./install.sh codex                         # 安装为 Codex 技能
