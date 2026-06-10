@@ -49,18 +49,21 @@ Requests send the key as header `x-api-key`. Never commit API keys or generated 
 ```bash
 git clone https://github.com/<your-org>/lingtu-skills.git
 cd lingtu-skills
-./install.sh                               # Auto-detect your AI platform
+./install.sh                               # Auto-detect platform, then ask which packages to install
 ```
 
-Or specify a target explicitly:
+Or specify a target and packages explicitly:
 
 ```bash
-./install.sh codex                         # Install as Codex skills
-./install.sh claude /path/to/project       # Copy CLAUDE.md into project
-./install.sh cursor /path/to/project       # Copy AGENTS.md into project
-./install.sh openai /path/to/project       # Export OpenAI adapter
-./install.sh dify /path/to/export/dir      # Export Dify adapter
+./install.sh codex all
+./install.sh codex content-create tkshop-query
+./install.sh claude /path/to/project content-create
+./install.sh cursor /path/to/project all
+./install.sh openai /path/to/export/dir tkshop-query
+./install.sh dify /path/to/export/dir all
 ```
+
+When no package is specified, the installer shows a selection guide. Customers can enter `all`, a package name, or package numbers such as `1,2`.
 
 ## Quick Start — Content Create
 
@@ -172,18 +175,21 @@ export LINGTU_AI_API_KEY="你的密钥"
 ```bash
 git clone https://github.com/<your-org>/lingtu-skills.git
 cd lingtu-skills
-./install.sh                               # 自动识别当前 AI 平台并安装
+./install.sh                               # 自动识别平台，然后引导选择要安装的能力
 ```
 
-也可手动指定目标平台：
+也可手动指定目标平台和能力包：
 
 ```bash
-./install.sh codex                         # 安装为 Codex 技能
-./install.sh claude /path/to/project       # 将 CLAUDE.md 复制到项目中
-./install.sh cursor /path/to/project       # 将 AGENTS.md 复制到项目中
-./install.sh openai /path/to/project       # 导出 OpenAI 适配器
-./install.sh dify /path/to/export/dir      # 导出 Dify 适配器
+./install.sh codex all
+./install.sh codex content-create tkshop-query
+./install.sh claude /path/to/project content-create
+./install.sh cursor /path/to/project all
+./install.sh openai /path/to/export/dir tkshop-query
+./install.sh dify /path/to/export/dir all
 ```
+
+不指定能力包时，安装脚本会显示选择引导。客户可以输入 `all`、能力包名称，或输入 `1,2` 这样的编号多选。
 
 ## 快速开始
 
