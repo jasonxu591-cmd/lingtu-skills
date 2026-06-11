@@ -1,127 +1,8 @@
-# 灵途 AI 能力套件 / Lingtu AI Agent Kit
+# 灵途 AI 能力套件
 
-将灵途 AI 能力封装为可复用的技能包，适配 Codex、Claude Code、Cursor、Dify、OpenAI 等不同智能体和平台。核心包与模型无关，适配器仅做薄层翻译。
+[English Version](README.en.md)
 
-<details>
-<summary>:page_facing_up: English Version (click to expand)</summary>
-
-Packages reusable Lingtu AI capabilities for different AI agents and platforms. Core packages are model-agnostic; adapters provide thin translation layers.
-
----
-
-## What's Inside
-
-- **`packages/content-create`** — generate product images, AI video reference packs, ecommerce/UGC selling videos, and viral-remake media through Lingtu AI.
-- **`packages/tkshop-query`** — query TK shop data: daily reports, shop lists, and AI-powered operations Q&A.
-
-## Repository Layout
-
-```text
-packages/
-  content-create/   # Image & video generation
-  tkshop-query/     # TK shop data & analytics
-adapters/
-  codex/            # Codex skill installation
-  claude/           # Claude Code CLAUDE.md
-  cursor/           # Cursor AGENTS.md
-  dify/             # Dify workflow export
-  openai/           # OpenAI custom GPT prompt
-install.sh          # One-command installer
-```
-
-## Prerequisites
-
-Set `LINGTU_AI_API_KEY` before using any package:
-
-```bash
-export LINGTU_AI_API_KEY="..."
-```
-
-| Platform | Command |
-|----------|---------|
-| macOS (app) | `launchctl setenv LINGTU_AI_API_KEY "..."` |
-| Windows (app) | `setx LINGTU_AI_API_KEY "..."` |
-
-Requests send the key as header `x-api-key`. Never commit API keys or generated business data.
-
-## Install
-
-```bash
-git clone https://github.com/<your-org>/lingtu-skills.git
-cd lingtu-skills
-./install.sh                               # Auto-detect platform, then ask which packages to install
-```
-
-Or specify a target and packages explicitly:
-
-```bash
-./install.sh codex all
-./install.sh codex content-create tkshop-query
-./install.sh claude /path/to/project content-create
-./install.sh cursor /path/to/project all
-./install.sh openai /path/to/export/dir tkshop-query
-./install.sh dify /path/to/export/dir all
-```
-
-When no package is specified, the installer shows a selection guide. Customers can enter `all`, a package name, or package numbers such as `1,2`.
-
-## Quick Start — Content Create
-
-```bash
-cd packages/content-create
-
-# Generate product images
-python3 scripts/lingtu_content_task.py \
-  --kind image \
-  --prompt "A clean product hero image on white background" \
-  --model gpt-image-2 \
-  --aspect-ratio 1:1 \
-  --nums 3 \
-  --reference-image /path/to/product.png
-
-# Generate ecommerce video
-python3 scripts/lingtu_content_task.py \
-  --kind video \
-  --prompt "A clean product reveal video" \
-  --model gemini-omni-video \
-  --seconds 10 \
-  --size 720x1280 \
-  --reference-image /path/to/ref-1.png \
-  --reference-image /path/to/ref-2.png
-```
-
-## Quick Start — TKShop Query
-
-```bash
-cd packages/tkshop-query
-
-# List all shops
-python3 scripts/lingtu_shop_data.py list-shops
-
-# Get daily report
-python3 scripts/lingtu_shop_data.py daily-report --date 2026-06-09
-
-# Get a specific shop's report
-python3 scripts/lingtu_shop_data.py daily-report --date 2026-06-09 --shop-name "Your Shop"
-
-# Ask an AI operations question
-python3 scripts/lingtu_shop_data.py ask "店铺最近经营有什么问题？"
-```
-
-## Delivery
-
-- Private GitHub repository with read access.
-- Versioned GitHub Releases (`v1.0.0`) as the contract.
-- Zip archive from a release tag.
-- Service or Docker deployment for private implementations.
-
-## Development
-
-Keep core logic in `packages/`. Keep adapters thin. When an API contract changes, update `references/api.md` first, then the script and adapter notes.
-
-</details>
-
----
+将灵途 AI 的能力封装为可复用的技能包，适配 Codex、Claude Code、Cursor、Dify、OpenAI 等不同智能体和平台。核心包与模型无关，适配器仅做薄层翻译。
 
 ## 简介
 
@@ -139,6 +20,8 @@ Keep core logic in `packages/`. Keep adapters thin. When an API contract changes
 
 - **`packages/content-create`** — 生成商品图、AI 视频参考图、电商卖货视频、爆款复刻视频等。
 - **`packages/tkshop-query`** — 查询 TK 店铺数据：日报、店铺列表、AI 经营问答。
+- **`packages/tiktok-monitor`** — 添加 TikTok 达人/竞品监控，并生成近期视频情报报告。
+- **`packages/report-render`** — 将结构化报告 JSON 渲染为可分享的 PNG 长图（开发中，暂未支持安装）。
 
 ## 目录结构
 
@@ -146,6 +29,8 @@ Keep core logic in `packages/`. Keep adapters thin. When an API contract changes
 packages/
   content-create/   # 图片与视频生成
   tkshop-query/     # TK 店铺数据查询
+  tiktok-monitor/   # TikTok 达人/竞品监控
+  report-render/    # 报告 JSON 转分享长图
 adapters/
   codex/            # Codex 技能安装
   claude/           # Claude Code 适配
@@ -182,7 +67,7 @@ cd lingtu-skills
 
 ```bash
 ./install.sh codex all
-./install.sh codex content-create tkshop-query
+./install.sh codex content-create tkshop-query tiktok-monitor
 ./install.sh claude /path/to/project content-create
 ./install.sh cursor /path/to/project all
 ./install.sh openai /path/to/export/dir tkshop-query
@@ -234,6 +119,21 @@ python3 scripts/lingtu_shop_data.py daily-report --date 2026-06-09 --shop-name "
 
 # 向 AI 提问经营问题
 python3 scripts/lingtu_shop_data.py ask "店铺最近经营有什么问题？"
+```
+
+### TikTok 达人/竞品监控（TikTok Monitor）
+
+```bash
+cd packages/tiktok-monitor
+
+# 添加达人/竞品账号，并生成最近 40 条视频分析
+python3 scripts/lingtu_tiktok_monitor.py add \
+  --input "https://www.tiktok.com/@example" \
+  --remark "竞品账号，主卖健身产品" \
+  --source feishu_group \
+  --group-id mock_group_001 \
+  --operator-id user_001 \
+  --format text
 ```
 
 ## 交付方式

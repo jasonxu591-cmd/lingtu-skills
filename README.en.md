@@ -1,0 +1,134 @@
+# Lingtu AI Agent Kit
+
+[中文版](README.md)
+
+Packages reusable Lingtu AI capabilities for different AI agents and platforms. Core packages are model-agnostic; adapters provide thin translation layers.
+
+## What's Inside
+
+- **`packages/content-create`** — generate product images, AI video reference packs, ecommerce/UGC selling videos, and viral-remake media through Lingtu AI.
+- **`packages/tkshop-query`** — query TK shop data: daily reports, shop lists, and AI-powered operations Q&A.
+- **`packages/tiktok-monitor`** — add TikTok creators or competitor accounts to monitoring and generate recent-video intelligence reports.
+- **`packages/report-render`** — turn structured report JSON into shareable PNG long-images (work in progress, not yet installable).
+
+## Repository Layout
+
+```text
+packages/
+  content-create/   # Image & video generation
+  tkshop-query/     # TK shop data & analytics
+  tiktok-monitor/   # TikTok creator & competitor monitoring
+  report-render/    # Report JSON to shareable PNG long-image
+adapters/
+  codex/            # Codex skill installation
+  claude/           # Claude Code CLAUDE.md
+  cursor/           # Cursor AGENTS.md
+  dify/             # Dify workflow export
+  openai/           # OpenAI custom GPT prompt
+install.sh          # One-command installer
+```
+
+## Prerequisites
+
+Set `LINGTU_AI_API_KEY` before using any package:
+
+```bash
+export LINGTU_AI_API_KEY="..."
+```
+
+| Platform | Command |
+|----------|---------|
+| macOS (app) | `launchctl setenv LINGTU_AI_API_KEY "..."` |
+| Windows (app) | `setx LINGTU_AI_API_KEY "..."` |
+
+Restart the app or terminal after setting. Requests send the key as header `x-api-key`. Never commit API keys or generated business data.
+
+## Install
+
+```bash
+git clone https://github.com/<your-org>/lingtu-skills.git
+cd lingtu-skills
+./install.sh                               # Auto-detect platform, then ask which packages to install
+```
+
+Or specify a target and packages explicitly:
+
+```bash
+./install.sh codex all
+./install.sh codex content-create tkshop-query tiktok-monitor
+./install.sh claude /path/to/project content-create
+./install.sh cursor /path/to/project all
+./install.sh openai /path/to/export/dir tkshop-query
+./install.sh dify /path/to/export/dir all
+```
+
+When no package is specified, the installer shows a selection guide. Customers can enter `all`, a package name, or package numbers such as `1,2`.
+
+## Quick Start — Content Create
+
+```bash
+cd packages/content-create
+
+# Generate product images
+python3 scripts/lingtu_content_task.py \
+  --kind image \
+  --prompt "A clean product hero image on white background" \
+  --model gpt-image-2 \
+  --aspect-ratio 1:1 \
+  --nums 3 \
+  --reference-image /path/to/product.png
+
+# Generate ecommerce video
+python3 scripts/lingtu_content_task.py \
+  --kind video \
+  --prompt "A clean product reveal video" \
+  --model gemini-omni-video \
+  --seconds 10 \
+  --size 720x1280 \
+  --reference-image /path/to/ref-1.png \
+  --reference-image /path/to/ref-2.png
+```
+
+## Quick Start — TKShop Query
+
+```bash
+cd packages/tkshop-query
+
+# List all shops
+python3 scripts/lingtu_shop_data.py list-shops
+
+# Get daily report
+python3 scripts/lingtu_shop_data.py daily-report --date 2026-06-09
+
+# Get a specific shop's report
+python3 scripts/lingtu_shop_data.py daily-report --date 2026-06-09 --shop-name "Your Shop"
+
+# Ask an AI operations question
+python3 scripts/lingtu_shop_data.py ask "What issues have there been in recent shop operations?"
+```
+
+## Quick Start — TikTok Monitor
+
+```bash
+cd packages/tiktok-monitor
+
+# Add a creator or competitor account and generate a 40-video report
+python3 scripts/lingtu_tiktok_monitor.py add \
+  --input "https://www.tiktok.com/@example" \
+  --remark "Competitor account, fitness products" \
+  --source feishu_group \
+  --group-id mock_group_001 \
+  --operator-id user_001 \
+  --format text
+```
+
+## Delivery
+
+- Private GitHub repository with read access.
+- Versioned GitHub Releases (`v1.0.0`) as the contract.
+- Zip archive from a release tag.
+- Service or Docker deployment for private implementations.
+
+## Development
+
+Keep core logic in `packages/`. Keep adapters thin. When an API contract changes, update `references/api.md` first, then the script and adapter notes.

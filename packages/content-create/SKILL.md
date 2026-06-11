@@ -1,10 +1,10 @@
 ---
 name: lingtu-content-create
 version: 0.1.0
-description: Create product images, reference images, ecommerce videos, viral remakes, and future media-generation tasks through Lingtu AI's task-based API. Use when a user asks Codex to generate or create images, product images, optimized AI video reference images, videos, ecommerce/UGC-style selling videos, viral video remakes, visual content, or other media with Lingtu AI; when prompts and multiple reference images must be sent to Lingtu AI; or when Codex needs to create a Lingtu AI task, poll by task id for up to about five minutes, and return generated asset URLs or files.
+description: 灵途 AI 内容生成。通过灵途 AI 的任务化接口生成商品主图、AI 视频参考图、电商带货视频、爆款视频复刻等媒体内容。用户提到"生成图片/视频"、"商品图优化"、"参考图三件套"、"带货视频"、"UGC 短视频"、"爆款复刻"，或需要把提示词与多张参考图传给灵途 AI 并轮询任务结果时使用。
 ---
 
-# Lingtu Content Create
+# 灵途 AI 内容生成（图片 / 视频 / 爆款复刻）
 
 ## Overview
 

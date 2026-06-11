@@ -3,10 +3,10 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-PACKAGE_IDS=("content-create" "tkshop-query")
-PACKAGE_NAMES=("Content Create - 商品图、参考图、电商视频、爆款复刻" "TKShop Query - TK 店铺数据查询和经营分析")
-PACKAGE_DIRS=("packages/content-create" "packages/tkshop-query")
-CODEX_NAMES=("lingtu-content-create" "tkshop-query")
+PACKAGE_IDS=("content-create" "tkshop-query" "tiktok-monitor")
+PACKAGE_NAMES=("Content Create - 商品图、参考图、电商视频、爆款复刻" "TKShop Query - TK 店铺数据查询和经营分析" "TikTok Monitor - TikTok 达人/竞品监控和内容情报分析")
+PACKAGE_DIRS=("packages/content-create" "packages/tkshop-query" "packages/tiktok-monitor")
+CODEX_NAMES=("lingtu-content-create" "lingtu-tkshop-query" "lingtu-tiktok-monitor")
 
 usage() {
   cat <<'USAGE'
@@ -22,7 +22,7 @@ Usage:
 Examples:
   ./install.sh
   ./install.sh codex all
-  ./install.sh codex content-create tkshop-query
+  ./install.sh codex content-create tkshop-query tiktok-monitor
   ./install.sh claude /path/to/project content-create
   ./install.sh cursor /path/to/project all
 
@@ -38,6 +38,7 @@ Packages:
   all
   content-create
   tkshop-query
+  tiktok-monitor
 USAGE
 }
 

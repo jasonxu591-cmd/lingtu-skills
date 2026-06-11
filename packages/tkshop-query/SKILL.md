@@ -1,10 +1,10 @@
 ---
-name: tkshop-query
+name: lingtu-tkshop-query
 version: 0.1.0
-description: Query TK shop data through Lingtu AI APIs. Use when a user asks Codex to look up, summarize, compare, or analyze TK store/shop data, merchant data, product/store metrics, order/customer/shop performance data, or other TK shop operations data; when the user asks for a shop daily report by date, shop name, or default shop; or when the user asks AI business questions about shop operations.
+description: TK 店铺数据查询与日报。通过灵途 AI 接口查询 TK 店铺/商家/商品/订单/客户表现等经营数据，支持按日期或店铺名拉取店铺日报、列出店铺清单，以及向 AI 提问店铺经营相关问题。用户提到"店铺日报"、"店铺数据"、"经营情况"、"GMV/订单/客单价"等场景时使用。
 ---
 
-# TKShop Query
+# TK 店铺数据查询与日报
 
 ## Overview
 

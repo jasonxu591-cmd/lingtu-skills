@@ -2,16 +2,22 @@
   "version": 1,
   "skills": {
     "lingtu-content-create": {
-      "source": "jasonxu591-cmd/lingtu-skills",
+      "source": "ailingtu/lingtu-skills",
       "sourceType": "github",
       "skillPath": "packages/content-create/SKILL.md",
-      "computedHash": "e74a56e9d4b9e7ee991dd41de3d77bd64b60dc7eea576106d68f7b85b8f68394"
+      "computedHash": "f8b57db49bc97339626a8c7d6c9225197dd4d3fee022ebcb66816d776884a22d"
     },
-    "tkshop-query": {
-      "source": "jasonxu591-cmd/lingtu-skills",
+    "lingtu-tkshop-query": {
+      "source": "ailingtu/lingtu-skills",
       "sourceType": "github",
       "skillPath": "packages/tkshop-query/SKILL.md",
-      "computedHash": "8350b3c298ef2125db9b3300dac9c52f30902f0c8961186859229bd7577bfafc"
+      "computedHash": "09675e30901b0b515d89368b5fbb0a6f96fff7ff8366f4bce1b6e0939e5a669b"
+    },
+    "lingtu-tiktok-monitor": {
+      "source": "ailingtu/lingtu-skills",
+      "sourceType": "github",
+      "skillPath": "packages/tiktok-monitor/SKILL.md",
+      "computedHash": "0c91793726dd869327846f32b6807e1686d6fc99d4fc795c9b48871b62924c2a"
     }
   }
 }

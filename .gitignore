@@ -1,7 +1,34 @@
+# macOS
 .DS_Store
-outputs/
+
+# Env / secrets
 .env
 .env.*
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Build / runtime output
+output/
+outputs/
+dist/
+build/
+*.log
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+
+# Legacy / archive
 .legacy/
+
+# Local Lingtu workspace (venv, conversations, cache, output)
+.lingtu-workspace/
