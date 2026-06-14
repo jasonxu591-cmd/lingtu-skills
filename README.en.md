@@ -9,6 +9,7 @@ Packages reusable Lingtu AI capabilities for different AI agents and platforms. 
 - **`packages/content-create`** — generate product images, AI video reference packs, ecommerce/UGC selling videos, and viral-remake media through Lingtu AI.
 - **`packages/tkshop-query`** — query TK shop data: daily reports, shop lists, and AI-powered operations Q&A.
 - **`packages/tiktok-monitor`** — add TikTok creators or competitor accounts to monitoring and generate recent-video intelligence reports.
+- **`packages/video-understand`** — turn a local video file or a TikTok/YouTube URL into a natural-language replication prompt for remixing, tagging, or video breakdown.
 - **`packages/report-render`** — turn structured report JSON into shareable PNG long-images (work in progress, not yet installable).
 
 ## Repository Layout
@@ -18,6 +19,7 @@ packages/
   content-create/   # Image & video generation
   tkshop-query/     # TK shop data & analytics
   tiktok-monitor/   # TikTok creator & competitor monitoring
+  video-understand/ # Video understanding & replication-prompt generation
   report-render/    # Report JSON to shareable PNG long-image
 adapters/
   codex/            # Codex skill installation
@@ -55,7 +57,7 @@ Or specify a target and packages explicitly:
 
 ```bash
 ./install.sh codex all
-./install.sh codex content-create tkshop-query tiktok-monitor
+./install.sh codex content-create tkshop-query tiktok-monitor video-understand
 ./install.sh claude /path/to/project content-create
 ./install.sh cursor /path/to/project all
 ./install.sh openai /path/to/export/dir tkshop-query
@@ -120,6 +122,22 @@ python3 scripts/lingtu_tiktok_monitor.py add \
   --group-id mock_group_001 \
   --operator-id user_001 \
   --format text
+```
+
+## Quick Start — Video Understand
+
+```bash
+cd packages/video-understand
+
+# Parse a TikTok / YouTube URL and stream a replication prompt
+python3 scripts/lingtu_video_understand.py replicate \
+  --url "https://www.tiktok.com/@user/video/1234567890"
+
+# Parse a local video file (auto-upload + replicate)
+python3 scripts/lingtu_video_understand.py replicate --file ./clip.mp4
+
+# Upload only — returns file id and CDN url, no replication
+python3 scripts/lingtu_video_understand.py upload ./clip.mp4
 ```
 
 ## Delivery
