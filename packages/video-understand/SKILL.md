@@ -1,0 +1,114 @@
+---
+name: lingtu-video-understand
+version: 0.5.0
+description: 视频理解、视频内容分析与复刻提示词生成。任何关于"一个视频/一条视频/这个视频/这条 TikTok/这条 YouTube"的内容性问题——包括"分析这个视频"、"这个视频讲了什么/在讲什么/在干嘛"、"这条视频内容是什么"、"看一下这个视频"、"理解视频"、"视频拆解"、"视频复刻"、"视频打标"、"把视频改写成提示词"、"二创这个视频"——都用本技能。把一个本地视频文件、已上传的素材，或一个 TikTok/YouTube 链接交给灵途 AI 解析，流式返回一段自然语言的视频复刻提示词（标题、主体、场景、分镜脚本、制作笔记）；再根据用户的问题在该提示词之上做相应解读（概括/打标/二创建议），用户只要"复刻提示词"时则原样返回。本地文件会先经 /v1/file/upload 上传再复刻。批量任务并发上限为 10。处理时只调脚本，不抓视频链接的网页/搜索引擎快照。
+---
+
+# 视频理解与复刻提示词生成
+
+## Overview
+
+Use this skill to turn a video into a natural-language replication prompt.
+
+Supported inputs:
+
+- A public TikTok or YouTube URL.
+- A local video file (the script uploads it through `/v1/file/upload` first, then replicates by file id).
+- A material/file already uploaded to Lingtu, referenced by `businessId` + `businessType`.
+
+Supported API flows:
+
+- File upload: `POST /v1/file/upload`, multipart/form-data with form field `file`.
+- Replication prompt: `POST /v1/material/analysisTask/stream`, server-sent events.
+
+Read `references/api.md` before changing endpoint paths, request fields, response fields, or streaming parsing. Use `scripts/lingtu_video_understand.py` for deterministic calls.
+
+## Configuration
+
+Use the same authentication pattern as the other Lingtu skills.
+
+Get your API key at https://app.ailingtu.com/api-key-management. Set `LINGTU_AI_API_KEY` before making requests:
+
+```bash
+export LINGTU_AI_API_KEY="..."
+```
+
+Send the key as the request header `x-api-key: <key>`. Do not store user API keys in this skill directory or commit them to source control.
+
+Use `https://api.ailingtu.com` as the default base URL unless a future API reference specifies another host.
+
+## Do Not
+
+- **Do not** call WebFetch / WebSearch / `curl` against the user-provided video URL (TikTok / YouTube / etc.) to pull web snapshots, search-engine cached pages, OG meta, or third-party metadata sites. The replication endpoint already ingests the source video; adding a web lookup just adds latency and is the wrong data path.
+- Exception: only fetch external pages when the user explicitly asks ("先去搜一下这个视频的背景再分析" / "go look up the background first").
+
+## Interpreting the output
+
+The replication prompt the script returns is the source of truth for what's in the video. Read it and answer the user's actual question on top of it — do not just dump the raw English prompt and walk away.
+
+- If the user asks "这个视频讲了什么 / 在讲什么 / 内容是什么 / 在干嘛"，先用 2–4 句中文概括（主体、场景、卖点/钩子、结尾 CTA），再附完整复刻提示词供他们查证。
+- If the user asks for tags / 关键词 / 选题归类，从提示词里提取并整理。
+- If the user asks "怎么二创 / 怎么改成我的版本"，基于提示词给改写建议或交给 `lingtu-content-create`。
+- If the user only说"帮我复刻这个视频 / 给我提示词"，那就原样返回提示词，不需要总结。
+- 默认语言跟随用户：用户用中文提问就用中文解读，提示词原文（通常英文）保留不翻译。
+
+## Workflow
+
+1. Decide the input shape.
+   - If the user provides a TikTok or YouTube URL, send `{ type: "REPLICATION", url }`.
+   - If the user provides a local video file path, upload it first through `POST /v1/file/upload` (form field `file`), then send `{ type: "REPLICATION", businessId: <data.id>, businessType: "FILE" }`.
+   - If the user references an already-uploaded material/file, send `{ type: "REPLICATION", businessId, businessType }` where `businessType` is `MATERIAL` or `FILE`.
+2. Always send `type: "REPLICATION"` for now. The `ANALYSIS` mode is reserved and not used by this skill.
+3. Stream the response. Concatenate every `data:` line's `result` field in order to assemble the final prompt.
+4. Echo the source (URL, local path, or business id) so the data origin is clear, then respond to the user's actual question per the *Interpreting the output* rules — summarize when they asked "讲了什么", extract tags when they asked for tagging, return the prompt as-is when they asked for "复刻 / 给我提示词".
+5. Downstream usage:
+   - For 二创/生成, hand the prompt to `lingtu-content-create`.
+   - For 打标/检索, keep the prompt as-is or extract tags from it.
+
+## Batch / Concurrency Limit
+
+Do **not** fan out unbounded parallel calls. Each replication holds an SSE connection until generation finishes (tens of seconds), and uploads consume bandwidth.
+
+- **Hard cap: at most 10 concurrent in-flight `replicate` (or `upload`) invocations**, regardless of input shape (URL, local file, or business id).
+- For batch jobs of >10 items, run a worker pool with concurrency ≤ 10 and queue the rest. Default to a smaller pool (3–5) when the user has not asked for "as fast as possible" — it is gentler on the server and on the user's bandwidth.
+- Do not retry tighter than once every few seconds on transient failures; if the server returns 429 / 5xx, back off before resuming.
+- When the user pastes a long list of videos, confirm the batch size with them before kicking off, and surface progress (e.g. "12 / 100 done") rather than running silently.
+
+Recommended shell pattern for ad-hoc batches (caps concurrency at 5):
+
+```bash
+cat urls.txt | xargs -I{} -P 5 \
+  python3 scripts/lingtu_video_understand.py replicate --url "{}"
+```
+
+## Script Usage
+
+Parse a TikTok or YouTube URL:
+
+```bash
+python3 scripts/lingtu_video_understand.py replicate --url "https://www.tiktok.com/@user/video/1234567890"
+```
+
+Parse a local video file (auto-upload + replicate):
+
+```bash
+python3 scripts/lingtu_video_understand.py replicate --file ./clip.mp4
+```
+
+Parse an uploaded material/file:
+
+```bash
+python3 scripts/lingtu_video_understand.py replicate --business-id 123456 --business-type MATERIAL
+```
+
+Upload only (returns the file id and CDN url, no replication):
+
+```bash
+python3 scripts/lingtu_video_understand.py upload ./clip.mp4
+```
+
+Print the raw stream (for debugging):
+
+```bash
+python3 scripts/lingtu_video_understand.py replicate --url "..." --raw
+```

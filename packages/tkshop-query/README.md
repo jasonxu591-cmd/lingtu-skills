@@ -2,12 +2,13 @@
 
 TKShop Query is a reusable agent package for TK shop operations data. It supports shop list lookup, daily shop reports, and AI business questions through Lingtu AI APIs.
 
-Current package version: `0.1.0`. Remote installers can compare the `version` field in [`SKILL.md`](./SKILL.md) frontmatter to decide whether an installed copy needs updating.
+Current package version: `0.2.0`. Remote installers can compare the `version` field in [`SKILL.md`](./SKILL.md) frontmatter to decide whether an installed copy needs updating.
 
 ## What It Does
 
 - Lists available shops through Lingtu AI.
-- Fetches a shop daily report by shop id, shop name, and date.
+- Fetches a single-shop daily report by shop id, shop name, and date.
+- Fetches an all-shops summary report by date, with automatic fallback to the first shop's daily report when the summary is empty.
 - Answers shop operations questions through the Lingtu AI chat API.
 - Provides deterministic script entry points for agents that can run local tools.
 
@@ -39,6 +40,12 @@ Fetch a daily report:
 
 ```bash
 python3 scripts/lingtu_shop_data.py daily-report --date 2026-06-09
+```
+
+Fetch the all-shops summary report:
+
+```bash
+python3 scripts/lingtu_shop_data.py summary-report --date 2026-06-09
 ```
 
 Ask a shop operations question:

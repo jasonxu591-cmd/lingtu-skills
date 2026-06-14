@@ -39,9 +39,18 @@ GET /v1/report/biz/detail?targetType=SHOP&targetId=1391&reportDate=2026-06-09
 
 Routing:
 
-- If the user gives no shop, fetch `/v1/shop/list` and use the first shop.
 - If the user gives a shop name, fetch `/v1/shop/list`, match by exact name first, then substring match.
 - If the user gives a numeric shop id, call the report endpoint directly.
+
+## All-Shops Summary Report
+
+Use this when the user asks about overall / cross-shop operations (整体经营情况、全部店铺数据汇总、大盘数据、总 GMV/订单 等不指定店铺的口径).
+
+```http
+GET /v1/report/biz/summary?reportDate={YYYY-MM-DD}
+```
+
+Fallback: when the summary response body is empty (`null`, empty string, `[]`, `{}`, or a `{ "data": <empty> }` envelope), the script falls back to `/v1/report/biz/detail` using the first shop from `/v1/shop/list` and returns both the original empty summary and the fallback daily report so the caller can see why the fallback fired.
 
 ## AI Chat
 

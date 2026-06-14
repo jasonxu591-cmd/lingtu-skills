@@ -4,6 +4,7 @@ Use this repository as a reusable Lingtu AI capability kit.
 
 ## Routing
 
+- For turning a video file (uploaded material) or a TikTok/YouTube URL into a natural-language replication prompt (for 二创 generation or video tagging/understanding), read `packages/video-understand/SKILL.md`.
 - For image generation, product reference optimization, ecommerce videos, and viral-remake media workflows, read `packages/content-create/SKILL.md`.
 - For TK shop data lookup, daily reports, shop lists, and operations analysis, read `packages/tkshop-query/SKILL.md`.
 - For TikTok creator/competitor monitoring, recent-video lookups, and content intelligence reports, read `packages/tiktok-monitor/SKILL.md`.
@@ -17,6 +18,7 @@ Require `LINGTU_AI_API_KEY` in the process environment. Get your key at https://
 
 Use the scripts bundled in each package:
 
+- `packages/video-understand/scripts/lingtu_video_understand.py`
 - `packages/content-create/scripts/lingtu_content_task.py`
 - `packages/tkshop-query/scripts/lingtu_shop_data.py`
 - `packages/tiktok-monitor/scripts/lingtu_tiktok_monitor.py`

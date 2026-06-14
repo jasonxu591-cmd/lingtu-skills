@@ -136,6 +136,50 @@ def daily_report(args):
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
+def summary_is_empty(report):
+    if report in (None, "", [], {}):
+        return True
+    if isinstance(report, dict):
+        data = report.get("data")
+        if data in (None, "", [], {}):
+            return True
+    return False
+
+
+def summary_report(args):
+    query = urllib.parse.urlencode({"reportDate": args.date})
+    report = request_json("GET", f"/v1/report/biz/summary?{query}")
+    if not summary_is_empty(report):
+        result = {
+            "reportDate": args.date,
+            "summary": report,
+        }
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+
+    resolved_id, resolved_name, resolved_shop = resolve_shop(None, None)
+    fallback_query = urllib.parse.urlencode({
+        "targetType": "SHOP",
+        "targetId": resolved_id,
+        "reportDate": args.date,
+    })
+    fallback = request_json("GET", f"/v1/report/biz/detail?{fallback_query}")
+    result = {
+        "reportDate": args.date,
+        "summary": report,
+        "fallback": {
+            "reason": "summary empty, returned first shop daily report",
+            "shop": {
+                "id": resolved_id,
+                "name": resolved_name,
+                "source": resolved_shop,
+            },
+            "report": fallback,
+        },
+    }
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
 def emit_stream_text(raw):
     text = raw.strip()
     if not text:
@@ -215,6 +259,12 @@ def main():
     report_parser.add_argument("--shop-id", help="Numeric shop id. Skips shop-list lookup.")
     report_parser.add_argument("--shop-name", help="Shop name to resolve through /v1/shop/list.")
 
+    summary_parser = subparsers.add_parser(
+        "summary-report",
+        help="Fetch the all-shops summary report. Falls back to the first shop's daily report when the summary is empty.",
+    )
+    summary_parser.add_argument("--date", required=True, help="Report date in YYYY-MM-DD format.")
+
     ask_parser = subparsers.add_parser("ask", help="Ask an AI shop operations question.")
     ask_parser.add_argument("question", help="Question to send to /v1/ai/chat/create.")
 
@@ -224,6 +274,8 @@ def main():
         print(json.dumps(data, ensure_ascii=False, indent=2))
     elif args.command == "daily-report":
         daily_report(args)
+    elif args.command == "summary-report":
+        summary_report(args)
     elif args.command == "ask":
         ask(args)
 
